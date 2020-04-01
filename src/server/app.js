@@ -10,7 +10,7 @@ const publicDir = path.join(__dirname ,'../static')
 app.use(express.static(publicDir))
 
 
-app.get('', (req,res) =>{
+app.get('*', (req,res) =>{
   res.sendFile(publicDir+'/cellAuto.html')
 
 })
