@@ -1,0 +1,31 @@
+body {
+  padding: 20px;
+  background-color: #444;
+}
+
+table {
+  margin:auto;
+  background-color:#c8c8b4;
+  border-spacing: 0;
+}
+
+td {
+  
+  border: 1px solid #b5b5a3;
+  border-radius: 3px;
+  width: 10px;
+  height: 10px;
+}
+
+td.dead {
+  background-color: transparent;
+}
+
+td.live {
+  background-color: #595950;
+  border-radius: 10px;
+}
+td.ant{
+  background-color: rgb(255, 51, 0)	;
+  border-radius: 10px;
+}
