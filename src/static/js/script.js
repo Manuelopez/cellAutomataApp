@@ -158,12 +158,7 @@ function cellClicked(){
   renderBoard()
 }	
 
-// ant obj
-function Ant(aRow, aCol, Orientation){
-  this.aRow = aRow
-  this.aCol = aCol
-  this.Orientation = Orientation
-}
+
 
 //infinite loop
 function infiniteLoop(){
@@ -174,6 +169,14 @@ function infiniteLoop(){
     timer = setTimeout(infiniteLoop, repTime)
   }
   renderBoard()
+}
+
+
+// ant obj
+function Ant(aRow, aCol, Orientation){
+  this.aRow = aRow
+  this.aCol = aCol
+  this.Orientation = Orientation
 }
 
 function isAnt(cRow, cCol){
