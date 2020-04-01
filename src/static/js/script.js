@@ -6,6 +6,7 @@ let board = []
 let antObj = []
 
 let repTime = 1000
+
 timer = document.getElementById('repTime')
 timer.addEventListener('change', (event)=>{
   repTime = event.target.value*1000
@@ -13,13 +14,7 @@ timer.addEventListener('change', (event)=>{
 
 window.onresize = resized
 
-function createArrayBoard(){
-  rows = Math.floor((window.innerHeight - 40)/15);
-  cols = Math.floor((window.innerWidth -40)/10);
 
-  board = Array(rows).fill().map(() => Array(cols).fill(0))
-
-}
 
 
 // playing componenets
@@ -34,14 +29,27 @@ let randB = document.getElementById('randButton')
 randB.onclick = randBCliecked
 
 let selectElement = document.getElementById('games')
-let selectValue = ''
+let selectValue = selectElement.value
 
+let jumpElement = document.getElementById('jumpIt')
+let jumpButton = document.getElementById('bJump')
 
+jumpButton.onclick = jumpButtonClicked
 
 selectElement.addEventListener('change', (event)=>{
   selectValue = event.target.value
   if(playing === true){
     playBClicked()
+  }
+
+  if(selectValue != 'antGame'){
+    jumpElement.style.display = "none"
+    jumpButton.style.display = "none"
+  }
+  else{
+    jumpElement.style.display = ""
+    jumpButton.style.display = ""
+
   }
   clearBClicked()
 })
@@ -66,6 +74,14 @@ function renderBoard(){
 }
 
 // button handlers
+function jumpButtonClicked(){
+  for(let i = 0; i< parseInt(jumpElement.value); i++){
+    nextAntBoardState()
+  }
+  renderBoard()
+
+}
+
 function randBCliecked(){
   antObj = []
   clearBClicked();
@@ -100,6 +116,16 @@ function playBClicked(){
     playing = true
   }
   infiniteLoop()
+}
+
+
+
+function createArrayBoard(){
+  rows = Math.floor((window.innerHeight - 40)/15);
+  cols = Math.floor((window.innerWidth -40)/10);
+
+  board = Array(rows).fill().map(() => Array(cols).fill(0))
+
 }
 
 //creates table board to view
@@ -254,6 +280,10 @@ function resized(){
   start()
   
 }
+
+
+
+
 
 function start(){
   createArrayBoard()
