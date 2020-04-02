@@ -5,9 +5,7 @@ let cols;
 let board = []
 let antObj = []
 
-let repTime = 1000
-
-
+let repTime = 100
 
 timer = document.getElementById('repTime')
 timer.addEventListener('change', (event)=>{
@@ -134,11 +132,7 @@ function cellClicked(){
   let row = parseInt(rowcol[0]);
   let col = parseInt(rowcol[1]);
   
-  if(selectValue === ''){
-    return alert('select a game')
-
-  }
-  else if(selectValue === 'antGame'){
+  if(selectValue === 'antGame'){
 
     if(board[row][col] >= 0 && !isAnt(row,col)){
       let ant = new Ant(row, col, 'U')
@@ -151,7 +145,7 @@ function cellClicked(){
       antObj.splice(antObj.indexOf(obj), 1)
     }
   }
-  else if(selectValue === 'lifeGame'){
+  else{
 
     if(board[row][col] === 0){
       board[row][col] = 1
@@ -176,6 +170,9 @@ function renderBoard(){
       else if(isAnt(i,j)){
         cell.setAttribute('class', 'ant')
       }
+      else if(board[i][j] == 2){
+        cell.setAttribute('class', 'bDying')
+      }
       else{
         cell.setAttribute('class','live')
       }
@@ -187,9 +184,13 @@ function infiniteLoop(){
   if(selectValue == 'antGame'){
     nextAntBoardState()
   }
-  if(selectValue == 'lifeGame'){
+  else if(selectValue == 'lifeGame'){
     nextLifeBoardState()
   }
+  else if(selectValue == 'brianGame'){
+    nextBrianBoardState()
+  }
+
   if(playing){
     timer = setTimeout(infiniteLoop, repTime)
   }
@@ -332,6 +333,54 @@ function countliveNeighbors(row, col){
 
   return sum
 }
+
+
+function nextBrianBoardState(){
+  let newState = Array(rows).fill().map(() => Array(cols).fill(0))
+  for(let i = 0; i < rows; i++){
+    for(let j = 0; j < cols; j++){
+      if(board[i][j] == 0){
+        if(countBrian(i,j) == 2){
+          newState[i][j] = 1
+        }
+        else{
+          newState[i][j] = 0
+        }
+      }
+      else if(board[i][j] == 1){
+        newState[i][j] = 2
+      }
+      else if(board[i][j] == 2){
+        newState[i][j] = 0
+      }
+    }
+  }
+  board = [...newState]
+}
+
+function countBrian(row, col){
+  let sum = 0
+  function fix(x){
+    if(x ==2){
+      return 0
+    }
+    return x
+  }
+  sum += fix(countDiagLU(row,col))
+  sum += fix(countU(row, col))
+  sum += fix(countDiagRU(row, col))
+  sum += fix(countL(row, col))
+  sum += fix(countR(row, col))
+  sum += fix(countDiagLD(row, col))
+  sum += fix(countD(row, col))
+  sum += fix(countDR(row, col))
+
+  return sum
+  
+}
+
+
+
 
 function countDiagLU(i,j){
   

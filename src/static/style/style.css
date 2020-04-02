@@ -53,10 +53,15 @@ td.dead {
 }
 
 td.live {
-  background-color: #595950;
+  background-color: #012a8a;
   border-radius: 10px;
 }
 td.ant{
   background-color: rgb(255, 51, 0)	;
+  border-radius: 10px;
+}
+
+td.bDying{
+  background-color: #595950	;
   border-radius: 10px;
 }
