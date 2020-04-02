@@ -4,8 +4,6 @@ const app = express()
 
 const port = process.env.PORT || 3000
 
-
-
 const publicDir = path.join(__dirname ,'../static')
 app.use(express.static(publicDir))
 

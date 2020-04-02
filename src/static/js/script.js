@@ -187,6 +187,9 @@ function infiniteLoop(){
   if(selectValue == 'antGame'){
     nextAntBoardState()
   }
+  if(selectValue == 'lifeGame'){
+    nextLifeBoardState()
+  }
   if(playing){
     timer = setTimeout(infiniteLoop, repTime)
   }
@@ -205,6 +208,12 @@ window.onresize = resized
 function start(){
   createArrayBoard()
   createTable()
+  antObj.forEach((ant)=>{
+    ant.aCol = mod(ant.aCol, cols)
+    ant.aRow = mod(ant.aRow, rows)
+  })
+  renderBoard()
+
 }
 window.onload = start()
 
@@ -223,6 +232,7 @@ function isAnt(cRow, cCol){
   }
   return false
 }
+
 
 function antSteps(nAnt, direc){
   if(direc == 'left'){
@@ -265,8 +275,7 @@ function antSteps(nAnt, direc){
 }
 
 function nextAntBoardState(){
-  for(let i = 0; i< antObj.length; i++){
-    let ant = antObj[i]
+  antObj.forEach((ant) =>{
 
     ant.aRow = mod(ant.aRow, rows)
     ant.aCol = mod(ant.aCol, cols)
@@ -279,13 +288,146 @@ function nextAntBoardState(){
       board[ant.aRow][ant.aCol] = 1
       antSteps(ant, 'right')
     }
+    
     ant.aRow = mod(ant.aRow, rows)
     ant.aCol = mod(ant.aCol, cols)
-  }
-}
+  })
+
+  
+}	
 var mod = function (n, m) {
   var remain = n % m;
   return Math.floor(remain >= 0 ? remain : remain + m);
+}
+
+
+function nextLifeBoardState(){
+  let newState = Array(rows).fill().map(() => Array(cols).fill(0))
+  for(let i = 0; i < rows; i++){
+    for(let j=0; j < cols; j++){
+      if(board[i][j] == 1 && (countliveNeighbors(i,j) == 2 || countliveNeighbors(i,j) == 3)){
+        newState[i][j] = 1
+      }
+      else if(board[i][j] == 0 && countliveNeighbors(i, j) == 3){
+        newState[i][j] = 1
+      }
+      else{
+        newState[i][j] = 0
+      }
+    }
+  }
+  board = [...newState]
+}
+
+function countliveNeighbors(row, col){
+  let sum = 0
+  sum += countDiagLU(row,col)
+  sum += countU(row, col)
+  sum += countDiagRU(row, col)
+  sum += countL(row, col)
+  sum += countR(row, col)
+  sum += countDiagLD(row, col)
+  sum += countD(row, col)
+  sum += countDR(row, col)
+
+  return sum
+}
+
+function countDiagLU(i,j){
+  
+  if(i == 0 && j == 0){
+    return board[rows-1][cols-1]
+  }
+  else if(i==0 && j > 0){
+    return board[rows-1][j-1]
+  }
+  else if(i > 0 && j == 0){
+    return board[i-1][cols-1]
+  }
+  else{
+    return board[i-1][j-1]
+  }
+}
+
+function countU(i, j){
+  if(i==0){
+    return board[rows-1][j]
+  }
+  else{
+    return board[i-1][j]
+  }
+}
+
+function countDiagRU(i, j){
+  if(i == 0 && j == cols-1){
+    return board[rows-1][0]
+  }
+  else if(i == 0 && j < cols -1){
+    return board[rows-1][j+1]
+  }
+  else if(i>0 && j == cols-1){
+    return board[i-1][0]
+  }
+  else{
+    return board[i-1][j+1]
+  }
+}
+
+function countL(i,j){
+  if(j == 0){
+    return board[i][cols-1] 
+  }
+  else{
+    return board[i][j-1]
+  }
+}
+
+function countR(i,j){
+  if(j == cols - 1){
+    return board[i][0]
+  }
+  else{
+    return board[i][j+1]
+  }
+}
+
+function countDiagLD(i,j){
+  if(i == rows-1 && j == 0){
+    return board[0][cols-1]
+  }
+  else if(i < rows-1 && j == 0){
+    return board[i+1][cols-1]
+  }
+  else if(i == rows-1 && j >0){
+    return board[0][j-1]
+  }
+  else{
+    return board[i+1][j-1]
+  }
+}
+
+function countD(i,j){
+  if(i == rows-1){
+    return board[0][j]
+  }
+  else{
+    return board[i+1][j]
+  }
+}
+
+function countDR(i, j){
+  if(i == rows - 1 && j == cols -1){
+    return board[0][0]
+  }
+  else if(i == rows -1 && j < cols -1){
+    return board[0][j+1]
+  }
+  else if(i< cols - 1 && j == cols -1){
+    return board[i+1][0]
+  }
+  else{
+    return board[i+1][j+1]
+  }
 }
 
 
