@@ -121,8 +121,8 @@ function playBClicked(){
 
 
 function createArrayBoard(){
-  rows = Math.floor((window.innerHeight - 40)/15);
-  cols = Math.floor((window.innerWidth -40)/10);
+  rows = Math.floor((window.innerHeight )/15);
+  cols = Math.floor((window.innerWidth )/10);
 
   board = Array(rows).fill().map(() => Array(cols).fill(0))
 
@@ -257,8 +257,7 @@ function antSteps(nAnt, direc){
 function nextAntBoardState(){
   for(let i = 0; i< antObj.length; i++){
     let ant = antObj[i]
-    ant.aRow = mod(ant.aRow, rows)
-    ant.aCol = mod(ant.aCol, cols)
+
     if(board[ant.aRow][ant.aCol] == 1){
       board[ant.aRow][ant.aCol] = 0
       antSteps(ant, 'left')
@@ -267,6 +266,8 @@ function nextAntBoardState(){
       board[ant.aRow][ant.aCol] = 1
       antSteps(ant, 'right')
     }
+    ant.aRow = mod(ant.aRow, rows)
+    ant.aCol = mod(ant.aCol, cols)
   }
 }
 var mod = function (n, m) {
@@ -280,10 +281,6 @@ function resized(){
   start()
   
 }
-
-
-
-
 
 function start(){
   createArrayBoard()

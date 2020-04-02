@@ -1,5 +1,5 @@
 body {
-  padding: 20px;
+  
   background-color: #444;
 }
 
@@ -7,6 +7,37 @@ table {
   margin:auto;
   background-color:#c8c8b4;
   border-spacing: 0;
+}
+
+nav{
+  overflow: hidden;
+  font-family: Arial;
+}
+
+nav button{
+  float: left;
+  font-size: 16px;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+nav input{
+  float: left;
+  font-size: 16px;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 14px 5px;
+  text-decoration: none;
+}
+nav select{
+  float: left;
+  font-size: 16px;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
 td {
