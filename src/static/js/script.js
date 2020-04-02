@@ -7,14 +7,12 @@ let antObj = []
 
 let repTime = 1000
 
+
+
 timer = document.getElementById('repTime')
 timer.addEventListener('change', (event)=>{
   repTime = event.target.value*1000
 })
-
-window.onresize = resized
-
-
 
 
 // playing componenets
@@ -53,25 +51,6 @@ selectElement.addEventListener('change', (event)=>{
   }
   clearBClicked()
 })
-
-
-// render board
-function renderBoard(){
-  for(let i = 0; i < rows; i++){
-    for(let j = 0; j < cols; j++){
-      let cell = document.getElementById(i+'_'+j)
-      if(!isAnt(i,j) && board[i][j]==0){
-        cell.setAttribute('class','dead')
-      }
-      else if(isAnt(i,j)){
-        cell.setAttribute('class', 'ant')
-      }
-      else{
-        cell.setAttribute('class','live')
-      }
-    }
-  }  
-}
 
 // button handlers
 function jumpButtonClicked(){
@@ -182,10 +161,27 @@ function cellClicked(){
     }   
   }
   renderBoard()
-}	
+}
 
 
 
+// render board
+function renderBoard(){
+  for(let i = 0; i < rows; i++){
+    for(let j = 0; j < cols; j++){
+      let cell = document.getElementById(i+'_'+j)
+      if(!isAnt(i,j) && board[i][j]==0){
+        cell.setAttribute('class','dead')
+      }
+      else if(isAnt(i,j)){
+        cell.setAttribute('class', 'ant')
+      }
+      else{
+        cell.setAttribute('class','live')
+      }
+    }
+  }  
+}
 //infinite loop
 function infiniteLoop(){
   if(selectValue == 'antGame'){
@@ -197,8 +193,22 @@ function infiniteLoop(){
   renderBoard()
 }
 
+// Window controler
+function resized(){
+  let elem = document.getElementById('boardContainer')
+  elem.innerHTML= ''
+  start()
+  
+}
+window.onresize = resized
 
-// ant obj
+function start(){
+  createArrayBoard()
+  createTable()
+}
+window.onload = start()
+
+// ant functions
 function Ant(aRow, aCol, Orientation){
   this.aRow = aRow
   this.aCol = aCol
@@ -258,6 +268,9 @@ function nextAntBoardState(){
   for(let i = 0; i< antObj.length; i++){
     let ant = antObj[i]
 
+    ant.aRow = mod(ant.aRow, rows)
+    ant.aCol = mod(ant.aCol, cols)
+
     if(board[ant.aRow][ant.aCol] == 1){
       board[ant.aRow][ant.aCol] = 0
       antSteps(ant, 'left')
@@ -275,15 +288,4 @@ var mod = function (n, m) {
   return Math.floor(remain >= 0 ? remain : remain + m);
 }
 
-function resized(){
-  let elem = document.getElementById('boardContainer')
-  elem.innerHTML= ''
-  start()
-  
-}
 
-function start(){
-  createArrayBoard()
-  createTable()
-}
-window.onload = start()
